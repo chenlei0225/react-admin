@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import {
   Form, Icon, Input, Button,message
 } from 'antd';
-
+import PropTypes from 'prop-types'
 const Item = Form.Item
 class LoginForm extends Component {
+  static propTypes = {
+    login:PropTypes.func.isRequired
+  }
   handleSubmit=(e)=>{
     e.preventDefault();
     const {validateFields, resetFields} = this.props.form;
@@ -16,7 +19,7 @@ class LoginForm extends Component {
         //校验通过
         console.log('收集的表单数据：', values);
         //发送ajax请求
-
+        this.props.login(values)
       } else {
         //校验失败
         //重置密码
@@ -54,8 +57,8 @@ class LoginForm extends Component {
             rules: [
               { required: true, message: '请输入密码!' },
               { max:16, message: '密码长度不能超过16位' },
-              { min:6, message: '密码长度不能小于6位' },
-              { pattern:/^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/, message: '密码必须包括：至少1个大写字母，1个小写字母，1个数字，1个特殊字符' },
+              { min:5, message: '密码长度不能小于5位' },
+              { pattern:/^[a-zA-Z0-9_-]+$/, message: '密码必须包括：大写字母，小写字母，数字或下划线' },
               ],
           })(
             <Input type="password" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="密码" />
